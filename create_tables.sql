@@ -78,3 +78,8 @@ CREATE TABLE Inventory (
     Supplier VARCHAR(255),
     CONSTRAINT fk_inventory_facility FOREIGN KEY (Facility_Id) REFERENCES Facility(Facility_Id) ON DELETE CASCADE
 );
+
+
+
+
+-- NOPE
