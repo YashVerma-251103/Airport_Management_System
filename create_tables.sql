@@ -31,9 +31,10 @@ CREATE TABLE Customer (
 
 -- Creating Booking Table (Weak Entity with Composite Primary Key)
 CREATE TABLE Booking (
-    Booking_Id SERIAL PRIMARY KEY,
+    Booking_Id SERIAL NOT NULL,
     Facility_Id INT NOT NULL,
     Aadhaar_No VARCHAR(20) NOT NULL,
+    PRIMARY KEY (Booking_Id,Facility_Id,Aadhaar_No),
     Employee_Id INT NOT NULL,
     Date_Time TIMESTAMP NOT NULL DEFAULT NOW(),
     Payment_Status VARCHAR(20) CHECK (Payment_Status IN ('Pending', 'Completed', 'Cancelled')),
@@ -44,10 +45,11 @@ CREATE TABLE Booking (
 
 -- Creating Feedback Table (Weak Entity with Composite Primary Key)
 CREATE TABLE Feedback (
-    Feedback_Id SERIAL PRIMARY KEY,
+    Feedback_Id SERIAL NOT NULL,
     Facility_Id INT NOT NULL,
     Aadhaar_No VARCHAR(20) NOT NULL,
     Manager_Id INT NOT NULL,
+    PRIMARY KEY (Feedback_Id, Facility_Id, Aadhaar_No, Manager_Id),
     Date_Time TIMESTAMP NOT NULL DEFAULT NOW(),
     Rating INT CHECK (Rating BETWEEN 1 AND 5),
     Comments TEXT,
