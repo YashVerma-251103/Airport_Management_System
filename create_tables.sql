@@ -73,5 +73,6 @@ CREATE TABLE Inventory (
     Item_Name VARCHAR(255) NOT NULL,
     Quantity INT CHECK (Quantity >= 0),
     Supplier VARCHAR(255),
+    PRIMARY KEY (Inventory_Id, Facility_Id),
     CONSTRAINT fk_inventory_facility FOREIGN KEY (Facility_Id) REFERENCES Facility(Facility_Id) ON DELETE CASCADE
 );
