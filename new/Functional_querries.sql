@@ -43,8 +43,8 @@ WHERE f.Facility_Id IN (
 -- Insertion Queries
 
 -- Insert a new booking record.
-INSERT INTO Booking (Facility_Id, Aadhaar_No, Employee_Id, Payment_Status)
-VALUES (1, '123456789012', 2, 'Pending');
+INSERT INTO Booking (Facility_Id, Aadhaar_No, Employee_Id, Date_Time, Payment_Status)
+VALUES (1, '111122223333', 2, '2025-03-19 12:00:00', 'Pending');
 
 -- Insert a new flight record.
 INSERT INTO Flight (Flight_Number, Airline, Departure_Time, Arrival_Time, Status, Gate, Terminal)
