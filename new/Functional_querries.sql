@@ -1,3 +1,6 @@
+-- -- TODO : May need to change the current date to a particular date.
+
+
 -- Data Retrieval with Multiple Joins :
 -- Retrieve booking details along with associated facility, customer, and employee (booking handler) information.
 SELECT 
@@ -86,8 +89,8 @@ WHERE ss.Shift_Date = CURRENT_DATE;
 
 
 -- Nested Subquery with Aggregation
--- List employees who have handled more than 5 bookings in the last month.
-SELECT 
+-- List employees who have handled more than 1 bookings in the last month.
+SELECT
     e.Employee_Id, 
     e.Name, 
     COUNT(b.Booking_Id) AS Booking_Count
@@ -95,11 +98,11 @@ FROM Employee e
 JOIN Booking b ON e.Employee_Id = b.Employee_Id
 WHERE b.Date_Time >= CURRENT_DATE - INTERVAL '1 month'
 GROUP BY e.Employee_Id, e.Name
-HAVING COUNT(b.Booking_Id) > 5;
+HAVING COUNT(b.Booking_Id) >= 2;
 
 
 -- Flight Information for Upcoming Departures
--- Retrieve flights scheduled to depart within the next three hours.
+-- Retrieve flights scheduled to depart within the next five hours from 6 am.
 SELECT 
     Flight_Number, 
     Airline, 
@@ -107,7 +110,7 @@ SELECT
     Arrival_Time, 
     Status
 FROM Flight
-WHERE Departure_Time BETWEEN NOW() AND NOW() + INTERVAL '3 hours';
+WHERE Departure_Time BETWEEN TIMESTAMP '2025-03-20 06:00:00' AND TIMESTAMP '2025-03-20 06:00:00' + INTERVAL '5 hours';
 
 
 -- Revenue Analysis per Facility
