@@ -9,4 +9,3 @@ SELECT * FROM Booking;
 SELECT * FROM Customer;
 SELECT * FROM Facility;
 SELECT * FROM Employee;
- 
