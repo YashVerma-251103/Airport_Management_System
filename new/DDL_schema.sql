@@ -13,11 +13,11 @@ CREATE TABLE Employee (
 CREATE TABLE Facility (
     Facility_Id SERIAL PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,
-    Type VARCHAR(100) CHECK (Type IN ('Gym', 'Lounge', 'Restaurant', 'Shop', 'Other')),
+    Type VARCHAR(100) NOT NULL CHECK (Type IN ('Gym', 'Lounge', 'Restaurant', 'Shop', 'Other')) ,
     Location TEXT NOT NULL,
     Contact_No VARCHAR(15) NOT NULL CHECK (Contact_No ~ '^[0-9]+$'),
     Opening_Hours VARCHAR(50) NOT NULL,
-    Manager_Id INT,
+    Manager_Id INT NOT NULL,
     CONSTRAINT fk_manager FOREIGN KEY (Manager_Id) REFERENCES Employee(Employee_Id) ON DELETE SET NULL
 );
 
@@ -25,7 +25,7 @@ CREATE TABLE Facility (
 CREATE TABLE Customer (
     Aadhaar_No VARCHAR(20) PRIMARY KEY,
     Customer_Name VARCHAR(255) NOT NULL,
-    Age INT CHECK (Age >= 0),
+    Age INT CHECK (Age >= 0) NOT NULL,
     Contact_No VARCHAR(15) NOT NULL CHECK (Contact_No ~ '^[0-9]+$')
 );
 
@@ -118,7 +118,7 @@ CREATE TABLE Communication (
 CREATE TABLE Incident (
     Incident_Id SERIAL PRIMARY KEY,
     Reported_By INT NOT NULL,
-    Facility_Id INT,
+    Facility_Id INT NOT NULL,
     Description TEXT NOT NULL,
     Status VARCHAR(50) CHECK (Status IN ('Reported', 'In Progress', 'Resolved')),
     Reported_At TIMESTAMP NOT NULL DEFAULT NOW(),
