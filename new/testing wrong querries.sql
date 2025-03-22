@@ -1,19 +1,26 @@
--- -- SELECT 
--- --     f.Name AS Facility_Name,
--- --     r.Financial_Year,
--- --     r.Yearly_Revenue,
--- --     e.Name AS Employee_Name,
--- --     s.Shift_Date,
--- --     c.Customer_Name,
--- --     b.Date_Time AS Last_Booking_Date
--- -- FROM Facility f
--- -- LEFT JOIN Revenue r ON f.Facility_Id = r.Facility_Id
--- -- LEFT JOIN Staff_Schedule s ON f.Facility_Id = s.Facility_Id
--- -- LEFT JOIN Employee e ON s.Employee_Id = e.Employee_Id
--- -- LEFT JOIN Booking b ON f.Facility_Id = b.Facility_Id
--- -- LEFT JOIN Customer c ON b.Aadhaar_No = c.Aadhaar_No
--- -- WHERE r.Financial_Year >= 2020
--- -- ORDER BY r.Financial_Year DESC, r.Yearly_Revenue DESC;
+-- -- Failed.
+
+-- SELECT 
+--     f.Name AS Facility_Name,
+--     r.Financial_Year,
+--     r.Yearly_Revenue,
+--     e.Name AS Employee_Name,
+--     s.Shift_Date,
+--     c.Customer_Name,
+--     b.Date_Time AS Last_Booking_Date
+-- FROM Facility f
+-- LEFT JOIN Revenue r ON f.Facility_Id = r.Facility_Id
+-- LEFT JOIN Staff_Schedule s ON f.Facility_Id = s.Facility_Id
+-- LEFT JOIN Employee e ON s.Employee_Id = e.Employee_Id
+-- LEFT JOIN Booking b ON f.Facility_Id = b.Facility_Id
+-- LEFT JOIN Customer c ON b.Aadhaar_No = c.Aadhaar_No
+-- WHERE r.Financial_Year >= 2020
+-- ORDER BY r.Financial_Year DESC, r.Yearly_Revenue DESC;
+
+
+
+
+
 
 -- WITH Facility_Performance AS (
 --     SELECT 
