@@ -1,7 +1,3 @@
-
-
-
-
 -- SCHEMA WAS ALREADY PROVIDED BEFORE THIS !
 
 -- --1 -- GPT
@@ -88,3 +84,114 @@ WHERE f.Facility_Id = fa.Facility_Id;
 
 
 
+-- --2 -- GPT
+
+-- PROMPT
+
+-- For each employee who holds the role of 'Technician' and has worked on at least three distinct facilities during night shifts (defined as shifts that start at or after 10:00 PM and end at or before 6:00 AM) in the month of December 2023, retrieve the following information:
+
+-- Employee Details:
+
+-- Employee_Id
+
+-- Name
+
+-- Total number of night shifts worked in December 2023
+
+-- List of distinct Facility_Names where the technician has worked night shifts
+
+-- Facility Managers:
+
+-- For each distinct facility identified above, provide the Name and Contact_No of the manager overseeing that facility.
+
+-- Communication Records:
+
+-- Retrieve all communication messages sent by the technician to any manager of the facilities they worked at during night shifts in December 2023. For each message, provide:
+
+-- Message_Id
+
+-- Receiver_Id (Manager's Employee_Id)
+
+-- Message_Type
+
+-- Message content
+
+-- Sent_At timestamp
+
+-- Additional Conditions:
+
+-- Ensure that the 'Technician' has a valid 'Shift_Timings' entry that includes the substring 'Night'.
+
+-- Only include communications where the Message_Type is 'Alert' or 'Notice'.
+
+-- Order the final result by Employee_Id, followed by Facility_Name, and then by Sent_At timestamp in ascending order.
+
+
+
+-- RESULT
+
+
+WITH NightShiftTechnicians AS (
+    -- Identify technicians who worked night shifts on at least 3 distinct facilities in December 2023
+    SELECT 
+        e.Employee_Id,
+        e.Name,
+        COUNT(DISTINCT f.Facility_Id) AS TotalFacilities,
+        ARRAY_AGG(DISTINCT f.Name) AS FacilityNames
+    FROM Employee e
+    JOIN Work_Shifts ws ON e.Employee_Id = ws.Employee_Id
+    JOIN Facility f ON ws.Facility_Id = f.Facility_Id
+    WHERE 
+        e.Role = 'Technician'
+        AND ws.Shift_Timings LIKE '%Night%'  -- Ensure valid night shift entry
+        AND ws.Start_Time >= '22:00:00' 
+        AND ws.End_Time <= '06:00:00'
+        AND ws.Date BETWEEN '2023-12-01' AND '2023-12-31'
+    GROUP BY e.Employee_Id, e.Name
+    HAVING COUNT(DISTINCT f.Facility_Id) >= 3
+),
+FacilityManagers AS (
+    -- Retrieve managers for the facilities where the technicians worked
+    SELECT 
+        f.Facility_Id,
+        f.Name AS Facility_Name,
+        e.Employee_Id AS Manager_Id,
+        e.Name AS Manager_Name,
+        e.Contact_No
+    FROM Facility f
+    JOIN Employee e ON f.Manager_Id = e.Employee_Id
+),
+TechnicianCommunications AS (
+    -- Retrieve communications sent by technicians to managers during December 2023
+    SELECT 
+        c.Sender_Id AS Technician_Id,
+        c.Receiver_Id,
+        c.Message_Id,
+        c.Message_Type,
+        c.Message_Content,
+        c.Sent_At
+    FROM Communication c
+    JOIN NightShiftTechnicians nt ON c.Sender_Id = nt.Employee_Id
+    JOIN FacilityManagers fm ON c.Receiver_Id = fm.Manager_Id
+    WHERE 
+        c.Message_Type IN ('Alert', 'Notice')
+        AND c.Sent_At BETWEEN '2023-12-01 00:00:00' AND '2023-12-31 23:59:59'
+)
+-- Final selection combining all required data
+SELECT 
+    nt.Employee_Id,
+    nt.Name AS Technician_Name,
+    nt.TotalFacilities AS Total_Night_Shifts,
+    nt.FacilityNames,
+    fm.Facility_Name,
+    fm.Manager_Name,
+    fm.Contact_No AS Manager_Contact,
+    tc.Message_Id,
+    tc.Receiver_Id AS Manager_Employee_Id,
+    tc.Message_Type,
+    tc.Message_Content,
+    tc.Sent_At
+FROM NightShiftTechnicians nt
+JOIN FacilityManagers fm ON fm.Facility_Name = ANY (nt.FacilityNames)
+LEFT JOIN TechnicianCommunications tc ON nt.Employee_Id = tc.Technician_Id
+ORDER BY nt.Employee_Id, fm.Facility_Name, tc.Sent_At;
