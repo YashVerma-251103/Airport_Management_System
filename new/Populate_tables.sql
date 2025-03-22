@@ -171,22 +171,22 @@ INSERT INTO Flight (Flight_Number, Airline, Departure_Time, Arrival_Time, Status
 ('G80507', 'GoAir', '2025-03-22 18:00:00', '2025-03-22 20:30:00', 'Arrived', 'E5', 'T1');
 
 -- 9. Staff_Schedule Table Inserts
-INSERT INTO Staff_Schedule (Employee_Id, Shift_Date, Shift_Start, Shift_End, Task_Description, Created_At) VALUES
-(2, '2025-03-20', '10:00:00', '18:00:00', 'Manage front-desk operations', '2025-03-15 09:00:00'),
-(3, '2025-03-20', '08:00:00', '16:00:00', 'Oversee technical maintenance', '2025-03-15 09:15:00'),
-(4, '2025-03-20', '07:00:00', '15:00:00', 'General cleaning duties', '2025-03-15 09:30:00'),
-(5, '2025-03-20', '12:00:00', '20:00:00', 'Security monitoring', '2025-03-15 09:45:00'),
-(1, '2025-03-20', '09:00:00', '17:00:00', 'Facility management oversight', '2025-03-15 10:00:00'),
-(7, '2025-03-21', '10:00:00', '18:00:00', 'Customer support', '2025-03-16 09:00:00'),
-(8, '2025-03-21', '08:00:00', '16:00:00', 'Equipment maintenance', '2025-03-16 09:15:00'),
-(9, '2025-03-21', '07:00:00', '15:00:00', 'Cleaning and sanitation', '2025-03-16 09:30:00'),
-(10, '2025-03-21', '12:00:00', '20:00:00', 'Security patrol', '2025-03-16 09:45:00'),
-(11, '2025-03-21', '09:00:00', '17:00:00', 'Managerial duties', '2025-03-16 10:00:00'),
-(12, '2025-03-22', '10:00:00', '18:00:00', 'Front-desk operations', '2025-03-17 09:00:00'),
-(13, '2025-03-22', '08:00:00', '16:00:00', 'Technical support', '2025-03-17 09:15:00'),
-(14, '2025-03-22', '07:00:00', '15:00:00', 'Cleaning duties', '2025-03-17 09:30:00'),
-(15, '2025-03-22', '12:00:00', '20:00:00', 'Security checks', '2025-03-17 09:45:00'),
-(6, '2025-03-22', '09:00:00', '17:00:00', 'Facility oversight', '2025-03-17 10:00:00');
+INSERT INTO Staff_Schedule (Employee_Id, Facility_Id, Shift_Date, Shift_Start, Shift_End, Task_Description, Created_At) VALUES
+(2, 1, '2025-03-20', '10:00:00', '18:00:00', 'Manage front-desk operations', '2025-03-15 09:00:00'),
+(3, 1, '2025-03-20', '08:00:00', '16:00:00', 'Oversee technical maintenance', '2025-03-15 09:15:00'),
+(4, 2, '2025-03-20', '07:00:00', '15:00:00', 'General cleaning duties', '2025-03-15 09:30:00'),
+(5, 3, '2025-03-20', '12:00:00', '20:00:00', 'Security monitoring', '2025-03-15 09:45:00'),
+(1, 4, '2025-03-20', '09:00:00', '17:00:00', 'Facility management oversight', '2025-03-15 10:00:00'),
+(7, 5, '2025-03-21', '10:00:00', '18:00:00', 'Customer support', '2025-03-16 09:00:00'),
+(8, 6, '2025-03-21', '08:00:00', '16:00:00', 'Equipment maintenance', '2025-03-16 09:15:00'),
+(9, 7, '2025-03-21', '07:00:00', '15:00:00', 'Cleaning and sanitation', '2025-03-16 09:30:00'),
+(10, 8, '2025-03-21', '12:00:00', '20:00:00', 'Security patrol', '2025-03-16 09:45:00'),
+(11, 9, '2025-03-21', '09:00:00', '17:00:00', 'Managerial duties', '2025-03-16 10:00:00'),
+(12, 10, '2025-03-22', '10:00:00', '18:00:00', 'Front-desk operations', '2025-03-17 09:00:00'),
+(13, 11, '2025-03-22', '08:00:00', '16:00:00', 'Technical support', '2025-03-17 09:15:00'),
+(14, 12, '2025-03-22', '07:00:00', '15:00:00', 'Cleaning duties', '2025-03-17 09:30:00'),
+(15, 13, '2025-03-22', '12:00:00', '20:00:00', 'Security checks', '2025-03-17 09:45:00'),
+(6, 14, '2025-03-22', '09:00:00', '17:00:00', 'Facility oversight', '2025-03-17 10:00:00');
 
 -- 10. Communication Table Inserts
 INSERT INTO Communication (Sender_Id, Receiver_Id, Message_Type, Message, Sent_At) VALUES

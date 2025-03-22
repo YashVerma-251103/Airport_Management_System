@@ -94,12 +94,14 @@ CREATE TABLE Flight (
 CREATE TABLE Staff_Schedule (
     Schedule_Id SERIAL PRIMARY KEY,
     Employee_Id INT NOT NULL,
+    Facility_Id INT NOT NULL,
     Shift_Date DATE NOT NULL,
     Shift_Start TIME NOT NULL,
     Shift_End TIME NOT NULL,
     Task_Description TEXT,
     Created_At TIMESTAMP NOT NULL DEFAULT NOW(),
-    CONSTRAINT fk_schedule_employee FOREIGN KEY (Employee_Id) REFERENCES Employee(Employee_Id) ON DELETE SET NULL
+    CONSTRAINT fk_schedule_employee FOREIGN KEY (Employee_Id) REFERENCES Employee(Employee_Id) ON DELETE SET NULL,
+    CONSTRAINT fk_schedule_facility FOREIGN KEY (Facility_Id) REFERENCES Facility(Facility_Id) ON DELETE SET NULL
 );
 
 -- 10. Communication Table (internal communication between employees)
