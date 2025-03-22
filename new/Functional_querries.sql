@@ -49,7 +49,7 @@ WHERE f.Facility_Id IN (
 INSERT INTO Booking (Facility_Id, Aadhaar_No, Employee_Id, Date_Time, Payment_Status)
 VALUES (1, '111122223333', 2, '2025-03-19 12:00:00', 'Pending');
 
-Insert a new flight record.
+-- Insert a new flight record.
 INSERT INTO Flight (Flight_Number, Airline, Departure_Time, Arrival_Time, Status, Gate, Terminal)
 VALUES ('AI202', 'Air India', '2025-04-20 15:30:00', '2025-04-20 18:00:00', 'On Time', 'G5', 'T1');
 

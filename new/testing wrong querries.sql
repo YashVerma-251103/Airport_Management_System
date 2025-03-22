@@ -1,0 +1,84 @@
+-- -- SELECT 
+-- --     f.Name AS Facility_Name,
+-- --     r.Financial_Year,
+-- --     r.Yearly_Revenue,
+-- --     e.Name AS Employee_Name,
+-- --     s.Shift_Date,
+-- --     c.Customer_Name,
+-- --     b.Date_Time AS Last_Booking_Date
+-- -- FROM Facility f
+-- -- LEFT JOIN Revenue r ON f.Facility_Id = r.Facility_Id
+-- -- LEFT JOIN Staff_Schedule s ON f.Facility_Id = s.Facility_Id
+-- -- LEFT JOIN Employee e ON s.Employee_Id = e.Employee_Id
+-- -- LEFT JOIN Booking b ON f.Facility_Id = b.Facility_Id
+-- -- LEFT JOIN Customer c ON b.Aadhaar_No = c.Aadhaar_No
+-- -- WHERE r.Financial_Year >= 2020
+-- -- ORDER BY r.Financial_Year DESC, r.Yearly_Revenue DESC;
+
+-- WITH Facility_Performance AS (
+--     SELECT 
+--         f.Name AS Facility_Name,
+--         r.Financial_Year,
+--         COUNT(b.Booking_Id) AS Total_Bookings,
+--         COALESCE(AVG(fe.Rating), 0) AS Avg_Rating,
+--         COALESCE(SUM(r.Yearly_Revenue), 0) AS Total_Revenue
+--     FROM Facility f
+--     LEFT JOIN Booking b ON f.Facility_Id = b.Facility_Id
+--     LEFT JOIN Feedback fe ON f.Facility_Id = fe.Facility_Id
+--     LEFT JOIN Revenue r ON f.Facility_Id = r.Facility_Id
+--     WHERE r.Financial_Year >= EXTRACT(YEAR FROM CURRENT_DATE) - 5
+--     GROUP BY f.Name, r.Financial_Year
+-- ),
+
+-- Top_Employees AS (
+--     SELECT 
+--         s.Employee_Id,
+--         e.Name AS Employee_Name,
+--         COUNT(s.Schedule_Id) AS Shifts_Assigned,
+--         SUM(CASE 
+--             WHEN s.Task_Description ILIKE '%cleaning%' THEN 1 
+--             ELSE 0 
+--         END) AS Cleaning_Tasks
+--     FROM Staff_Schedule s
+--     JOIN Employee e ON s.Employee_Id = e.Employee_Id
+--     GROUP BY s.Employee_Id, e.Name
+--     HAVING COUNT(s.Schedule_Id) > 10
+-- ),
+
+-- High_Value_Customers AS (
+--     SELECT 
+--         c.Aadhaar_No,
+--         c.Customer_Name,
+--         COUNT(b.Booking_Id) AS Total_Bookings,
+--         SUM(CASE 
+--             WHEN b.Payment_Status = 'Completed' THEN 1 
+--             ELSE 0 
+--         END) AS Successful_Payments
+--     FROM Customer c
+--     JOIN Booking b ON c.Aadhaar_No = b.Aadhaar_No
+--     GROUP BY c.Aadhaar_No, c.Customer_Name
+--     HAVING COUNT(b.Booking_Id) > 5
+-- )
+
+-- SELECT 
+--     fp.Facility_Name,
+--     fp.Financial_Year,
+--     fp.Total_Bookings,
+--     fp.Avg_Rating,
+--     fp.Total_Revenue,
+--     te.Employee_Name AS Top_Employee,
+--     te.Shifts_Assigned,
+--     hc.Customer_Name AS High_Value_Customer,
+--     hc.Total_Bookings
+-- FROM Facility_Performance fp
+-- LEFT JOIN Top_Employees te ON te.Employee_Id = (
+--     SELECT Employee_Id FROM Staff_Schedule 
+--     WHERE Shift_Date >= (CURRENT_DATE - INTERVAL '1 year')
+--     ORDER BY Shift_Date DESC LIMIT 1
+-- )
+-- LEFT JOIN High_Value_Customers hc ON hc.Aadhaar_No = (
+--     SELECT Aadhaar_No FROM Booking 
+--     WHERE Date_Time >= (CURRENT_DATE - INTERVAL '1 year')
+--     ORDER BY Date_Time DESC LIMIT 1
+-- )
+-- ORDER BY fp.Financial_Year DESC, fp.Total_Revenue DESC;
