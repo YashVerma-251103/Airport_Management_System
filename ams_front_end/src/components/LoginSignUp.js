@@ -1,5 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "./LoginSignUp.css"; 
+
+
 
 const LoginSignUp = () => {
   const [activeTab, setActiveTab] = useState("login");
@@ -61,16 +65,23 @@ const LoginSignUp = () => {
       console.error('Registration failed:', error);
     }
   };
-  
+
+  const navigate = useNavigate();
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(`http://localhost:3000/users?loginId=${loginData.loginId}`);
       const users = await response.json();
-      
+  
       if (users.length > 0 && users[0].password === loginData.password) {
         alert('Login successful!');
-        // Handle successful login
+        
+        if (loginData.loginId.includes("admin")) {
+          navigate("/AdminHome"); // redirect to AdminHome route
+        } else {
+          alert("Logged in, but role not recognized for redirection.");
+        }
       } else {
         alert('Invalid credentials!');
       }
@@ -78,6 +89,7 @@ const LoginSignUp = () => {
       console.error('Login failed:', error);
     }
   };
+  
 
   return (
     <div className="login-signup-container">
