@@ -1,7 +1,6 @@
-# routes/api.py
 from flask import Blueprint, jsonify, request
 from models.user import User
-from database import SessionLocal  # Import SessionLocal from the new module
+from database import SessionLocal
 
 api_bp = Blueprint('api', __name__)
 

@@ -19,3 +19,42 @@ function App() {
 }
 
 export default App;
+
+
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+
+// function App() {
+//   const [users, setUsers] = useState([]);
+
+//   useEffect(() => {
+//     // Replace with your actual API endpoint
+//     axios.get('http://127.0.0.1:5000')
+//       .then(response => {
+//         setUsers(response.data);
+//       })
+//       .catch(error => {
+//         console.error('Error fetching data: ', error);
+//       });
+//   }, []);
+
+//   return (
+//     <div>
+//       <h1>User List</h1>
+//       {users.length === 0 ? (
+//         <p>No users found.</p>
+//       ) : (
+//         <ul>
+//           {users.map(user => (
+//             <li key={user.id}>
+//               {user.name} - {user.email}
+//             </li>
+//           ))}
+//         </ul>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default App;
+
