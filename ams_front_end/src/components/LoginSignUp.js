@@ -32,13 +32,7 @@ const LoginSignUp = () => {
     });
   };
 
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    console.log("Login submitted:", loginData);
-    // Add your login logic here
-  };
-
-  const handleSignupSubmit = (e) => {
+  const handleSignupSubmit = async (e) => {
     e.preventDefault();
     if (signupData.password !== signupData.confirmPassword) {
       alert("Passwords don't match!");
@@ -46,13 +40,43 @@ const LoginSignUp = () => {
     }
     
     const loginId = `${signupData.contactNumber}_${signupData.role}`;
-    setGeneratedLoginId(loginId);
-    
-    console.log("Signup submitted:", {
-      ...signupData,
-      loginId: loginId,
-    });
-    // Add your signup logic here
+    const userData = {
+      name: signupData.name,
+      contactNumber: signupData.contactNumber,
+      role: signupData.role,
+      password: signupData.password, // Hash this in production
+      loginId: loginId
+    };
+  
+    try {
+      const response = await fetch('http://localhost:3000/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
+      
+      setGeneratedLoginId(loginId);
+      alert('Registration successful!');
+    } catch (error) {
+      console.error('Registration failed:', error);
+    }
+  };
+  
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:3000/users?loginId=${loginData.loginId}`);
+      const users = await response.json();
+      
+      if (users.length > 0 && users[0].password === loginData.password) {
+        alert('Login successful!');
+        // Handle successful login
+      } else {
+        alert('Invalid credentials!');
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
   };
 
   return (
