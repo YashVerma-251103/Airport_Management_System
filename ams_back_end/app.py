@@ -1,9 +1,14 @@
+import os
 from flask import Flask, jsonify, request
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import Config
 from models.user import Base, User
 from flask_cors import CORS
+
+
+db_uri = os.environ.get("DATABASE_URL")
+print("DATABASE_URL:", db_uri)  # This should print your full connection string
 
 app = Flask(__name__)
 app.config.from_object(Config)
