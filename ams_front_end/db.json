@@ -7,6 +7,14 @@
       "role": "user",
       "password": "123456",
       "loginId": "9810215968_user"
+    },
+    {
+      "id": "b51a",
+      "name": "Yash",
+      "contactNumber": "8368530228",
+      "role": "user",
+      "password": "123",
+      "loginId": "8368530228_user"
     }
   ]
 }
