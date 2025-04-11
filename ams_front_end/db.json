@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "id": "c4c2",
+      "name": "Unique",
+      "contactNumber": "9810215968",
+      "role": "user",
+      "password": "123456",
+      "loginId": "9810215968_user"
+    }
+  ]
+}
