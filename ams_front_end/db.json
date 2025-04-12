@@ -23,6 +23,14 @@
       "role": "admin",
       "password": "123456",
       "loginId": "123456789_admin"
+    },
+    {
+      "id": "f807",
+      "name": "Gautam",
+      "contactNumber": "987654321",
+      "role": "admin",
+      "password": "123456",
+      "loginId": "987654321_admin"
     }
   ]
 }
