@@ -79,7 +79,16 @@ const LoginSignUp = () => {
         
         if (loginData.loginId.includes("admin")) {
           navigate("/AdminHome"); // redirect to AdminHome route
-        } else {
+        } else if (loginData.loginId.includes("manager")) {
+          navigate("/ManagerHome"); // redirect to ManagerHome route
+        }
+        else if (loginData.loginId.includes("employee")) {
+          navigate("/EmployeeHome"); // redirect to EmployeeHome route 
+        }
+        else if (loginData.loginId.includes("customer")) {
+          navigate("/CustomerHome"); // redirect to CustomerHome route
+        }
+         else {
           alert("Logged in, but role not recognized for redirection.");
         }
       } else {
@@ -174,9 +183,11 @@ const LoginSignUp = () => {
                 onChange={handleSignupChange}
                 required
               >
-                <option value="user">User</option>
+                
                 <option value="admin">Admin</option>
                 <option value="manager">Manager</option>
+                <option value="Employee">Employee</option>
+                <option value="customer">Customer</option>
               </select>
             </div>
             <div className="form-group">

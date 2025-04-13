@@ -31,6 +31,38 @@
       "role": "admin",
       "password": "123456",
       "loginId": "987654321_admin"
+    },
+    {
+      "id": "78b7",
+      "name": "Mayank",
+      "contactNumber": "1111111111",
+      "role": "manager",
+      "password": "1111",
+      "loginId": "1111111111_manager"
+    },
+    {
+      "id": "c0f6",
+      "name": "Nats",
+      "contactNumber": "1234567890",
+      "role": "customer",
+      "password": "123456",
+      "loginId": "1234567890_customer"
+    },
+    {
+      "id": "cb39",
+      "name": "mudit",
+      "contactNumber": "9999999999",
+      "role": "manager",
+      "password": "123456",
+      "loginId": "9999999999_manager"
+    },
+    {
+      "id": "43cd",
+      "name": "Mayank",
+      "contactNumber": "9876543210",
+      "role": "Employee",
+      "password": "123456",
+      "loginId": "9876543210_Employee"
     }
   ]
 }

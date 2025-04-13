@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
+import { FaBars, FaTimes, FaPlus, FaEdit, FaTrash, FaSignOutAlt } from 'react-icons/fa';
+import { MdFlight, MdPeople, MdBusiness, MdEvent, MdFeedback, 
+         MdAttachMoney, MdInventory, MdSchedule, MdMessage, MdWarning } from 'react-icons/md';
 import "./AdminHome.css";
 
 const AdminHome = () => {
@@ -10,6 +13,22 @@ const AdminHome = () => {
   const [editMode, setEditMode] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [formData, setFormData] = useState({});
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    // Icons mapping for each entity
+    const entityIcons = {
+      employees: <MdPeople />,
+      facilities: <MdBusiness />,
+      customers: <MdPeople />,
+      bookings: <MdEvent />,
+      feedback: <MdFeedback />,
+      revenue: <MdAttachMoney />,
+      inventory: <MdInventory />,
+      flights: <MdFlight />,
+      staff_schedule: <MdSchedule />,
+      communication: <MdMessage />,
+      incidents: <MdWarning />
+    };
 
   // Define the structure of each entity based on your DDL
   const entitySchemas = {
@@ -241,12 +260,16 @@ const AdminHome = () => {
     }
   };
 
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   const renderForm = () => {
     const schema = entitySchemas[activeTab];
     return (
       <div className="form-modal">
         <div className="form-content">
-          <h2>{currentItem ? 'Edit' : 'Create'} {activeTab}</h2>
+          <h2>{currentItem ? 'Edit' : 'Create'} {activeTab.replace('_', ' ')}</h2>
           <form onSubmit={handleSubmit}>
             {schema.fields.map((field) => {
               if (!field.editable && !currentItem) return null;
@@ -254,7 +277,7 @@ const AdminHome = () => {
               if (field.type === 'select') {
                 return (
                   <div key={field.name} className="form-group">
-                    <label>{field.name}</label>
+                    <label>{field.name.replace('_', ' ')}</label>
                     <select
                       name={field.name}
                       value={formData[field.name] || ''}
@@ -270,7 +293,7 @@ const AdminHome = () => {
               } else {
                 return (
                   <div key={field.name} className="form-group">
-                    <label>{field.name}</label>
+                    <label>{field.name.replace('_', ' ')}</label>
                     <input
                       type={field.type}
                       name={field.name}
@@ -283,8 +306,16 @@ const AdminHome = () => {
               }
             })}
             <div className="form-actions">
-              <button type="submit">Save</button>
-              <button type="button" onClick={() => setEditMode(false)}>Cancel</button>
+              <button type="submit" className="btn-primary">
+                Save
+              </button>
+              <button 
+                type="button" 
+                onClick={() => setEditMode(false)}
+                className="btn-secondary"
+              >
+                Cancel
+              </button>
             </div>
           </form>
         </div>
@@ -292,68 +323,154 @@ const AdminHome = () => {
     );
   };
 
+    const navigate = useNavigate();
+  
   const renderTable = () => {
-    if (loading) return <div>Loading...</div>;
-    if (data.length === 0) return <div>No data available</div>;
+    if (loading) return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Loading data...</p>
+      </div>
+    );
+    
+    if (data.length === 0) return (
+      <div className="empty-state">
+        <p>No {activeTab.replace('_', ' ')} data available</p>
+        <button onClick={handleCreate} className="btn-primary">
+          <FaPlus /> Create New
+        </button>
+      </div>
+    );
 
     const schema = entitySchemas[activeTab];
     return (
       <div className="table-container">
-        <button onClick={handleCreate} className="create-button">Create New</button>
-        <table>
-          <thead>
-            <tr>
-              {schema.fields.map(field => (
-                <th key={field.name}>{field.name}</th>
-              ))}
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={index}>
+        <div className="table-header">
+          <h3>{activeTab.replace('_', ' ').toUpperCase()} MANAGEMENT</h3>
+          <button onClick={handleCreate} className="btn-primary">
+            <FaPlus /> Create New
+          </button>
+        </div>
+        
+        <div className="table-responsive">
+          <table>
+            <thead>
+              <tr>
                 {schema.fields.map(field => (
-                  <td key={`${index}-${field.name}`}>
-                    {field.type === 'datetime-local' || field.type === 'date' || field.type === 'time'
-                      ? new Date(item[field.name]).toLocaleString()
-                      : item[field.name]}
-                  </td>
+                  <th key={field.name}>{field.name.replace('_', ' ')}</th>
                 ))}
-                <td>
-                  <button onClick={() => handleEdit(item)}>Edit</button>
-                  <button onClick={() => handleDelete(item)}>Delete</button>
-                </td>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.map((item, index) => (
+                <tr key={index}>
+                  {schema.fields.map(field => (
+                    <td key={`${index}-${field.name}`}>
+                      {field.type === 'datetime-local' || field.type === 'date' || field.type === 'time'
+                        ? new Date(item[field.name]).toLocaleString()
+                        : item[field.name]}
+                    </td>
+                  ))}
+                  <td className="actions-cell">
+                    <button 
+                      onClick={() => handleEdit(item)} 
+                      className="btn-edit"
+                    >
+                      <FaEdit />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(item)} 
+                      className="btn-delete"
+                    >
+                      <FaTrash />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   };
 
   return (
-    <div className="admin-dashboard">
-      <div className="sidebar">
-        <h2>Admin Dashboard</h2>
+    <div className={`admin-dashboard ${sidebarOpen ? 'sidebar-open' : ''}`}>
+      {/* Mobile Header - Fixed position */}
+      <div className="mobile-header">
+        <button className="menu-toggle" onClick={toggleSidebar}>
+          {sidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+        </button>
+        <h1 className="mobile-title">
+          {activeTab.charAt(0).toUpperCase() + activeTab.slice(1).replace('_', ' ')}
+        </h1>
+      </div>
+  
+{/* Sidebar */}
+<div className="sidebar">
+      <div className="sidebar-header">
+        <h2>Airport Admin</h2>
+        <button 
+          className="sidebar-close" 
+          onClick={toggleSidebar}
+          style={{ display: 'none' }}
+        >
+          <FaTimes />
+        </button>
+      </div>
+      
+      <div className="sidebar-content">
         <ul>
           {Object.keys(entitySchemas).map(entity => (
             <li
               key={entity}
               className={activeTab === entity ? 'active' : ''}
-              onClick={() => setActiveTab(entity)}
+              onClick={() => {
+                setActiveTab(entity);
+                setSidebarOpen(false);
+              }}
             >
-              {entity.charAt(0).toUpperCase() + entity.slice(1).replace('_', ' ')}
+              <span className="entity-icon">{entityIcons[entity]}</span>
+              <span className="entity-name">
+                {entity.charAt(0).toUpperCase() + entity.slice(1).replace('_', ' ')}
+              </span>
             </li>
           ))}
         </ul>
+
+        {/* Add this section for profile and logout */}
+        <div className="sidebar-footer">
+          <div className="profile-info">
+            <div className="profile-icon">
+              <MdPeople size={24} />
+            </div>
+            <div className="profile-details">
+              <span className="profile-name">Admin User</span>
+              <span className="profile-role">Administrator</span>
+            </div>
+          </div>
+          <button className="logout-btn" onClick={() => navigate("/LoginSignUp", { replace: true}) }>
+            <FaSignOutAlt size={18} />
+            <span>Logout</span>
+          </button>
+        </div>
       </div>
+    </div>
+
+  
+      {/* Main Content */}
       <div className="main-content">
-        <h1>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1).replace('_', ' ')} Management</h1>
         {renderTable()}
       </div>
+  
+      {/* Form Modal */}
       {editMode && renderForm()}
     </div>
   );
+  
 };
+
+
 
 export default AdminHome;

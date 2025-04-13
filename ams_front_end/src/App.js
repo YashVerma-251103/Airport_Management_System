@@ -5,14 +5,24 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './App.css';
 import LoginSignUp from "./components/LoginSignUp";
 import AdminHome from "./components/AdminHome";
+import ManagerHome from "./components/ManagerHome";
+import EmployeeHome from "./components/EmployeeHome";
+import CustomerHome from "./components/CustomerHome";
 
 function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<LoginSignUp />} />
-        <Route path="/login_signup" element={<LoginSignUp />} />
+      {/* <Route path="/" element={<LoginSignUp />} /> */}
+      {/* <Route path="/" element={<AdminHome />} /> */}
+      {/* <Route path="/" element={<ManagerHome />} /> */}
+      <Route path="/" element={<EmployeeHome />} />
+      {/* <Route path="/" element={<CustomerHome />} />  */}
+        <Route path="/LoginSignup" element={<LoginSignUp />} />
         <Route path="/AdminHome" element={<AdminHome />} />
+        <Route path="/ManagerHome" element={<ManagerHome />} />
+        <Route path="/EmployeeHome" element={<EmployeeHome />} />
+        <Route path="/CustomerHome" element={<CustomerHome />} />
       </Routes>
     </Router>
   );
